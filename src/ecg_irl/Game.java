@@ -1,7 +1,12 @@
 package ecg_irl;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Ellipse2D;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,10 +19,16 @@ public class Game extends JPanel{
 	private JFrame frame;
 	Player player;
 	Map map;
+	StatsBar stats;
     public final Set<Character> pressed = new HashSet<Character>();
+    int dimension;
 
 
 	public Game(){
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
+		
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
@@ -25,8 +36,10 @@ public class Game extends JPanel{
 		frame.add(this);
 		frame.add(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-
+		for(int i = 0; (height-100) > i; i+=50)
+			dimension = i;
+		frame.setSize(dimension, dimension);
+		frame.setLocation(width/2 - dimension/2, height/2 - dimension/2);
 		setFocusable(true);
 
 		keyListener klisten = new keyListener();
@@ -35,28 +48,34 @@ public class Game extends JPanel{
 
 		player = new Player();
 		map = new Map(player);
-
+		stats = new StatsBar(player, frame, this);
+		
 	}
+	
 	public void step(){
 		if(pressed.contains(' ')) player.setSpeed(2);
 		else player.setSpeed(1);
 		
-		if(pressed.contains('w') && map.getY()!=0){
+		if(pressed.contains('w') && map.getY() <=0){
 			player.moveUp();
 			map.moveUp();
 		}
 		else if(pressed.contains('s') && map.getY() >= (-map.getMapHeight()+frame.getHeight())){
 			player.moveDown();
 			map.moveDown();
+		}else{
+			player.stopY();
 		}
 		
-		if(pressed.contains('a') && map.getX()!=0){
+		if(pressed.contains('a') && map.getX() <=0){
 			player.moveRight();
 			map.moveRight();
 		}
 		else if(pressed.contains('d') && map.getX() >= (-map.getMapWidth()+frame.getWidth())){
 			player.moveLeft();
 			map.moveLeft();
+		}else{
+			player.stopX();
 		}
 		player.move();
 		map.move();
@@ -65,6 +84,7 @@ public class Game extends JPanel{
 		super.paintComponent(g);
 		map.drawMap(g, this);
 		player.drawPlayer(g, this, frame);
+		stats.drawLevel((Graphics2D) g, this);
 	}
 
 

@@ -1,24 +1,27 @@
 package ecg_irl;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Player {
-	int intelligence, exp, maxEXP, hp, maxHP, xMove, yMove, x, y, time, speed;
+	int intelligence, exp, maxEXP, hp, maxHP, xMove, yMove, x, y, time, speed, count, level;
 	boolean dead;
-	private ImageIcon player;
-
+	private BufferedImage spriteSheet = null;
 
 	public Player(){
+		count = 0;
 		x = 0;
 		y = 0;
 		hp = 50;
 		maxHP = 50;
 		exp = 0;
-		maxEXP = 100;
+		maxEXP = 30;
 		time = 80;
 		speed = 5;
 	}
@@ -28,6 +31,9 @@ public class Player {
 	public void moveDown(){
 		yMove = -speed;
 	}
+	public void stopY(){
+		yMove = 0;
+	}
 
 	public void moveRight(){
 		xMove = speed;
@@ -35,11 +41,12 @@ public class Player {
 	public void moveLeft(){
 		xMove = -speed;
 	}
+	public void stopX(){
+		xMove = 0;
+	}
 	public void move(){
 		x += xMove;
 		y += yMove;
-		xMove = 0;
-		yMove = 0;
 	}
 	public void rest(){
 		hp = maxHP;
@@ -55,10 +62,47 @@ public class Player {
 			killed();
 	}
 	public void drawPlayer(Graphics g, JPanel game, JFrame frame){
-		player = new ImageIcon("sprite.png");
-		player.paintIcon(game, g,frame.getWidth()/2 - player.getIconWidth()/2, frame.getHeight()/2 - player.getIconHeight()/2);
+		try{
+			spriteSheet = ImageIO.read(new File("spritesheet.PNG"));
+		}catch (IOException e){
+
+		}
+		if(yMove > 0){
+			if(count < 30)
+				g.drawImage(spriteSheet.getSubimage(0, 104, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count < 60 && count >= 30)
+				g.drawImage(spriteSheet.getSubimage(72, 104, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count >= 60)
+				g.drawImage(spriteSheet.getSubimage(144, 104, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);	
+		}else if(yMove < 0){
+			if(count < 30)
+				g.drawImage(spriteSheet.getSubimage(0, 0, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count < 60 && count >= 30)
+				g.drawImage(spriteSheet.getSubimage(72, 0, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count >= 60)
+				g.drawImage(spriteSheet.getSubimage(144, 0, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);	
+		}else if(xMove > 0){
+			if(count < 30)
+				g.drawImage(spriteSheet.getSubimage(0, 208, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count < 60 && count >= 30)
+				g.drawImage(spriteSheet.getSubimage(72, 208, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count >= 60)
+				g.drawImage(spriteSheet.getSubimage(144, 208, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);	
+		}else if(xMove < 0){
+			if(count < 30)
+				g.drawImage(spriteSheet.getSubimage(0, 312, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count < 60 && count >= 30)
+				g.drawImage(spriteSheet.getSubimage(72, 312, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+			else if(count >= 60)
+				g.drawImage(spriteSheet.getSubimage(144, 312, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);	
+		}else{
+			g.drawImage(spriteSheet.getSubimage(72, 0, 72, 104), (int) frame.getWidth()/2 - 72/2, (int) frame.getHeight()/2 - 104/2, 72, 104, null);
+		}
+		if(count < 90)
+			count += speed;
+		else count = 0;
+
 	}
-	
 	public int getxMove() {
 		return xMove;
 	}
@@ -120,6 +164,12 @@ public class Player {
 
 	public void setmaxHP(int maxHP) {
 		this.maxHP = maxHP;
+	}
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 }
