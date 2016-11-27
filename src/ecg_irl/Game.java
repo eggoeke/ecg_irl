@@ -10,10 +10,9 @@ import javax.swing.JPanel;
 public class Game extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-	public static int mapY=0, mapX=0;
+	public static int mapY, mapX;
 	private JFrame frame;
 	private ImageIcon map;
-	private keyListener klisten = new keyListener();
 
 	public Game(){
 		frame = new JFrame();
@@ -23,9 +22,14 @@ public class Game extends JPanel{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
 		
+		setFocusable(true);
+		
+		keyListener klisten = new keyListener();
 		addKeyListener(klisten);
 		
-		map = new ImageIcon("map.png");
+		
+		mapX =0;
+		mapY= 0;
 
 	}
 	public void step(){
@@ -33,7 +37,7 @@ public class Game extends JPanel{
 	}
 	public void paintComponent(java.awt.Graphics g) {
 		super.paintComponent(g);
-		
+		map = new ImageIcon("map.png");
 		map.paintIcon(this, g, mapX, mapY);
 	}
 }
@@ -45,6 +49,18 @@ class keyListener implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if(e.getKeyChar() == 'w' && Game.mapY!=0){
+			Game.mapY+=5;
+		}
+		else if(e.getKeyChar() == 's'){
+			Game.mapY-=5;
+		}
+		else if(e.getKeyChar() == 'a' && Game.mapX!=0){
+			Game.mapX+=5;
+		}
+		else if(e.getKeyChar() == 'd'){
+			Game.mapX-=5;
+		}
 	}
 
 	@Override
@@ -54,15 +70,6 @@ class keyListener implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if(e.getKeyChar() == 'w')
-			Game.mapY-= 1;
-		else if(e.getKeyChar() == 's')
-			Game.mapY+=1;
-		else if(e.getKeyChar() == 'a')
-			Game.mapX-=1;
-		else if(e.getKeyChar() == 'd')
-			Game.mapX+=1;
-		
 		
 	}
 	
