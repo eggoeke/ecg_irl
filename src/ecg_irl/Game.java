@@ -2,6 +2,7 @@ package ecg_irl;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -84,7 +85,14 @@ public class Game extends JPanel{
 		super.paintComponent(g);
 		map.drawMap(g, this);
 		player.drawPlayer(g, this, frame);
-		stats.drawLevel((Graphics2D) g, this);
+		
+		
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Color.ORANGE);
+		g2.fill(new Ellipse2D.Double(0,0,frame.getWidth()/8,frame.getWidth()/8));
+		g.setFont(new Font("Courier", Font.PLAIN, 60));
+		g.setColor(Color.WHITE);
+		g.drawString(Integer.toString(player.getLevel()), frame.getWidth()/22, frame.getHeight()/12);
 	}
 
 
