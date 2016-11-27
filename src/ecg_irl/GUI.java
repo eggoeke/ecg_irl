@@ -12,7 +12,7 @@ public class GUI {
 		Game game = new Game();
 		boolean isRunning = true;
 		long lastLoopTime = System.nanoTime();
-		TARGET_FPS = 350;
+		TARGET_FPS = 100;
 		fps = 0;
 		long lastFpsTime = 0;
 
