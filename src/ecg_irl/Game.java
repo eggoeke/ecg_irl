@@ -22,7 +22,10 @@ public class Game extends JPanel{
 	Map map;
 	StatsBar stats;
     public final Set<Character> pressed = new HashSet<Character>();
-    int dimension;
+    static int dimension;
+    
+    public GameStateManager gsm;
+
 
 
 	public Game(){
@@ -46,11 +49,12 @@ public class Game extends JPanel{
 		keyListener klisten = new keyListener();
 		addKeyListener(klisten);
 
+		gsm = new GameStateManager();
 
+		
 		player = new Player();
 		map = new Map(player);
 		stats = new StatsBar(player, frame, this);
-		
 	}
 	
 	public void step(){
@@ -86,15 +90,29 @@ public class Game extends JPanel{
 		map.drawMap(g, this);
 		player.drawPlayer(g, this, frame);
 		
-		
+//		Building b = new Building(860, 320, 195, 600);
+		g.setColor(Color.BLACK);
+		//frank
+		g.fillRect(780 + map.getX(), 290 +map.getY(), 300, 630);
+		//bauman
+		g.fillRect(1412 + map.getX(), 450 +map.getY(), 240, 330);
+		//dorm1
+		g.fillRect(942- 65 + map.getX(),1109-104 +map.getY(), 65+500, 104+180);
+		g.fillRect(1130- 65 + map.getX(),1263-104 +map.getY(), 65+120, 104+200);
+		//cce place
+		g.fillRect(852- 65 + map.getX(),1740-104 +map.getY(), 70+335, 104+120);
+		g.fillRect(970- 65 + map.getX(),1620-104 +map.getY(), 170, 104+100);
+
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.ORANGE);
 		g2.fill(new Ellipse2D.Double(0,0,frame.getWidth()/8,frame.getWidth()/8));
 		g.setFont(new Font("Courier", Font.PLAIN, 60));
 		g.setColor(Color.WHITE);
 		g.drawString(Integer.toString(player.getLevel()), frame.getWidth()/22, frame.getHeight()/12);
+	
+	
+		gsm.draw(g);
 	}
-
 
 
 
@@ -103,13 +121,12 @@ public class Game extends JPanel{
 		@Override
 		public synchronized void keyPressed(KeyEvent e) {
 			pressed.add(e.getKeyChar());
+			gsm.keyPressed(e.getKeyCode());
 		}
 
 		@Override
 		public synchronized void keyReleased(KeyEvent e) {
 			pressed.remove(e.getKeyChar());
-			for(char c: pressed)
-				System.out.println(c);
 		}
 
 		@Override

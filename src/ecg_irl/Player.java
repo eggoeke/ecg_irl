@@ -21,7 +21,7 @@ public class Player {
 		hp = 50;
 		maxHP = 50;
 		exp = 0;
-		maxEXP = 30;
+		maxEXP = 100;
 		time = 80;
 		speed = 5;
 	}
