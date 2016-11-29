@@ -14,6 +14,8 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ecg_irl.Game.STATE;
+
 public class Game extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -21,14 +23,25 @@ public class Game extends JPanel{
 	Player player;
 	Map map;
 	StatsBar stats;
+	StartMenu menu;
     public final Set<Character> pressed = new HashSet<Character>();
     static int dimension;
     
     public GameStateManager gsm;
+    
 
+    
+    //enum
+    public static enum STATE{
+    	MENU,
+    	GAME
+    };
 
+    public static STATE State = STATE.MENU;
 
 	public Game(){
+		
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int height = (int) screenSize.getHeight();
 		int width = (int) screenSize.getWidth();
@@ -49,8 +62,11 @@ public class Game extends JPanel{
 		keyListener klisten = new keyListener();
 		addKeyListener(klisten);
 
+		this.addMouseListener(new MouseInput());
+		
 		gsm = new GameStateManager();
-
+		
+		menu = new StartMenu();
 		
 		player = new Player();
 		map = new Map(player);
@@ -58,6 +74,8 @@ public class Game extends JPanel{
 	}
 	
 	public void step(){
+		
+	
 		if(pressed.contains(' ')) player.setSpeed(2);
 		else player.setSpeed(1);
 		
@@ -85,7 +103,13 @@ public class Game extends JPanel{
 		player.move();
 		map.move();
 	}
+	
+	
+	
 	public void paintComponent(java.awt.Graphics g) {
+		
+		if(State == STATE.GAME){
+		
 		super.paintComponent(g);
 		map.drawMap(g, this);
 		player.drawPlayer(g, this, frame);
@@ -112,6 +136,11 @@ public class Game extends JPanel{
 	
 	
 		gsm.draw(g);
+		}
+		
+		else if (State == STATE.MENU){
+			menu.render(g);
+		}
 	}
 
 
@@ -120,14 +149,19 @@ public class Game extends JPanel{
 	private class keyListener implements KeyListener{
 		@Override
 		public synchronized void keyPressed(KeyEvent e) {
+			
+			if(State == STATE.GAME){
 			pressed.add(e.getKeyChar());
 			gsm.keyPressed(e.getKeyCode());
+			}
 		}
 
 		@Override
 		public synchronized void keyReleased(KeyEvent e) {
+			if(State == STATE.GAME){
 			pressed.remove(e.getKeyChar());
-		}
+			}
+			}
 
 		@Override
 		public void keyTyped(KeyEvent e) {
