@@ -28,7 +28,7 @@ public class MenuState extends GameState {
 	@Override
 	public void draw(Graphics g) {
 		if(toggle){
-			g.fillRect(Game.dimension/2 - Game.dimension/12, Game.dimension/2 - Game.dimension/6, Game.dimension/8, Game.dimension/8);
+			g.fillRect(Game.dimension/2 - Game.dimension/2, Game.dimension/7 -5, Game.dimension/7, Game.dimension/7);
 			for(int i = 0; i < options.length; i++) {
 
 				if(i == currentSelection) {
@@ -38,7 +38,8 @@ public class MenuState extends GameState {
 				}
 
 
-				g.drawString(options[i], Game.dimension/2 - Game.dimension/12, Game.dimension/2 - Game.dimension/8 + i * 30);
+				g.drawString(options[i], Game.dimension/2 - Game.dimension/2, Game.dimension/2 - Game.dimension/3 + i * 30);
+
 
 
 			}

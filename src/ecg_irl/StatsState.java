@@ -2,6 +2,8 @@ package ecg_irl;
 
 import java.awt.Graphics;
 
+import javax.swing.JPanel;
+
 public class StatsState extends GameState{
 	
 	public StatsState(GameStateManager gsm) {
@@ -33,11 +35,19 @@ public class StatsState extends GameState{
 		
 	}
 
+	public void drawStats(Graphics g, JPanel panel) {
+		
+		
+		
+		
+		
+
+	}
+
 	@Override
 	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-		g.drawRect(0, 0, Game.WIDTH, Game.HEIGHT);
-
+		g.fillRect(0, 0, Game.dimension, Game.dimension);
+		
 	}
 
 
