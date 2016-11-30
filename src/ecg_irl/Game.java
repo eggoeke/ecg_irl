@@ -93,6 +93,7 @@ public class Game extends JPanel{
 	public void step(){
 		if(State == STATE.GAME)
 			gsm.tick();
+		bm.tick();
 	}
 
 
@@ -104,36 +105,36 @@ public class Game extends JPanel{
 			gsm.draw(g);
 
 			g.setColor(Color.BLACK);
-			//frank
-//			g.fillRect(780 + map.getX(), 290 +map.getY(), 300, 630);
-			//bauman
-			g.fillRect(1412 + map.getX(), 450 +map.getY(), 240, 330);
-			g.fillRect(1380- 65 + map.getX(),665-104 +map.getY(), 350+65, 155+100);
-			//king
-			g.fillRect(1270- 65 + map.getX(),2000-104 +map.getY(), 350+65, 321+100);
-			//duke
-			g.fillRect(1727- 65 + map.getX(),2810-104 +map.getY(), 310+65, 190+100);
-
-			
-			
-			//dorm1
-			g.fillRect(942- 65 + map.getX(),1109-104 +map.getY(), 65+500, 104+180);
-			g.fillRect(1130- 65 + map.getX(),1263-104 +map.getY(), 65+120, 104+200);
-			//cce place
-			g.fillRect(852- 65 + map.getX(),1740-104 +map.getY(), 70+335, 104+120);
-			g.fillRect(970- 65 + map.getX(),1620-104 +map.getY(), 170, 104+100);
-			//dorm
-			g.fillRect(1611- 65 + map.getX(),1240-104 +map.getY(), 300+65, 135+100);
-			//smol thing
-			g.fillRect(2250- 65 + map.getX(),720-104 +map.getY(), 100+65, 100+100);
-			//dorm
-			g.fillRect(1950- 65 + map.getX(),462-104 +map.getY(), 300+65, 150+100);
-			//dorm
-			g.fillRect(1342- 65 + map.getX(),1639-104 +map.getY(), 300+65, 140+100);
-			g.fillRect(1500- 65 + map.getX(),1560-104 +map.getY(), 111+65, 315+100);
-			//hege
-			g.fillRect(1023- 65 + map.getX(),2460-104 +map.getY(), 600+65, 345+100);
-
+//			//frank
+//			g.fillRect(780+65 + map.getX(), 290+100 +map.getY(), 300-65, 630-100);
+//			//bauman
+//			g.fillRect(1412 +65+ map.getX(), 450 +100 +map.getY(), 240-65, 330-100);
+//			g.fillRect(1380 + map.getX(),665 +map.getY(), 350, 155);
+//			//king
+//			g.fillRect(1270 + map.getX(),2000 +map.getY(), 350, 321);
+//			//duke
+//			g.fillRect(1727 + map.getX(),2810 +map.getY(), 310, 190);
+//
+//			
+//			
+//			//dorm1
+//			g.fillRect(942  + map.getX(),1109 +map.getY(), 500, 180);
+//			g.fillRect(1130  + map.getX(),1263 +map.getY(), 120, 200);
+//			//cce place
+//			g.fillRect(852  + map.getX(),1740 +map.getY(), 335, 120);
+//			g.fillRect(970  + map.getX(),1620 +map.getY(), 150, 200);
+//			//dorm
+//			g.fillRect(1611  + map.getX(),1240 +map.getY(), 300, 135);
+//			//smol thing
+//			g.fillRect(2250  + map.getX(),720 +map.getY(), 100, 100);
+//			//dorm
+//			g.fillRect(1950  + map.getX(),462 +map.getY(), 300, 150);
+//			//dorm
+//			g.fillRect(1342  + map.getX(),1639 +map.getY(), 300, 140);
+//			g.fillRect(1500 + map.getX(),1560 +map.getY(), 111, 315);
+//			//hege
+//			g.fillRect(1023 + map.getX(),2460 +map.getY(), 600, 345);
+//
 
 
 

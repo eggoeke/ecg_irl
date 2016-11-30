@@ -8,7 +8,7 @@ public class BuildingManager {
 	
 	public BuildingManager(Map map){
 		buildings = new ArrayList<Building>();
-		buildings.add(new OffLimitsBuilding(new Rectangle(780 + map.getX(), 290 +map.getY(), 300, 630), null, map));
+		buildings.add(new OffLimitsBuilding(new Rectangle(780+60 + map.getX(), 290+95 +map.getY(), 300-65, 630-100), map));
 	}
 	public void tick(){
 		for(int i = 0; i < buildings.size(); i++)

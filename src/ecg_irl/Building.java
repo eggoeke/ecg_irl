@@ -1,11 +1,10 @@
 package ecg_irl;
 
-import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public abstract class Building {
 	
-	public Building(Rectangle rect1, Rectangle rect2, Map map){
+	public Building(Rectangle rect1, Map map){
 	}
 	public void init() {
 	}
