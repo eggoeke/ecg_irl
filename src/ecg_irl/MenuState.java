@@ -1,17 +1,21 @@
 package ecg_irl;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 
 public class MenuState extends GameState {
 	boolean toggle;
 	private String[] options = {"Stats", "Journal", "Quit"};
 	private int currentSelection = 0;
 
-	public MenuState(GameStateManager gsm){
-
-		super(gsm);
+	public MenuState(GameStateManager gsm, Player player, Map map, JPanel panel, JFrame frame){
+		super(gsm, player, map, panel, frame);
 	}
 
 	@Override
@@ -28,6 +32,7 @@ public class MenuState extends GameState {
 	@Override
 	public void draw(Graphics g) {
 		if(toggle){
+			g.setFont(new Font("Arial", Font.BOLD, 25));
 			g.fillRect(Game.dimension/2 - Game.dimension/2, Game.dimension/7 -5, Game.dimension/7, Game.dimension/7);
 			for(int i = 0; i < options.length; i++) {
 
@@ -67,9 +72,7 @@ public class MenuState extends GameState {
 
 		if(k == KeyEvent.VK_ENTER) {
 			if(currentSelection == 0){
-
-				gsm.states.push(new StatsState(gsm));
-
+				//stats
 
 			}else if(currentSelection == 1){
 

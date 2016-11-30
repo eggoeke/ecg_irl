@@ -1,39 +1,47 @@
 package ecg_irl;
 
-import java.awt.Font;
 import java.awt.Graphics;
-import java.util.Stack;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 
 public class GameStateManager {
 
-	
-	public Stack<GameState> states;
-	
-	
-	public GameStateManager(){
-			
-		states = new Stack<GameState>();
-		states.push(new MenuState(this));
+
+	public ArrayList<GameState> states;
+
+
+	public GameStateManager(Player player, Map map, JPanel panel, JFrame frame){
+
+		states = new ArrayList<GameState>();
+		states.add(new PlayState(this, player, map, panel, frame));
+		states.add(new MenuState(this, player, map, panel, frame));
+		states.add(new StatsState(this, player, map, panel, frame));
+
+
 	}
-	
+
 	public void tick(){
-		
-		states.peek().tick();
-		
+
+		for(int i = 0; i < states.size(); i++)
+			states.get(i).tick();
+
 	}
-	
+
 	public void draw(Graphics g){
-		g.setFont(new Font("Arial", Font.BOLD, 25));
-		states.peek().draw(g);
+		for(int i = 0; i < states.size(); i++)
+			states.get(i).draw(g);
 	}
-	
+
 	public void keyPressed(int k){
-		
-		states.peek().keyPressed(k);
+		for(int i = 0; i < states.size(); i++)
+			states.get(i).keyPressed(k);
 	}
-	
+
 	public void keyReleased(int k){
-		
-		states.peek().keyReleased(k);
+		for(int i = 0; i < states.size(); i++)
+			states.get(i).keyReleased(k);
 	}
 }

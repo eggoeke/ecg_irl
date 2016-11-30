@@ -1,16 +1,16 @@
 package ecg_irl;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Building {
-	int x, y, width, height;
-	public Building(int x, int y, int width, int height){
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+public abstract class Building {
+	
+	public Building(Rectangle rect1, Rectangle rect2, Map map){
 	}
-	public void drawRect(Graphics g){
-		
+	public void init() {
 	}
+	public abstract void tick();
+	public abstract void keyPressed(int k);
+	public abstract void keyReleased(int k);
+
 }

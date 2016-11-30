@@ -8,13 +8,9 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ecg_irl.Game.STATE;
 
 public class Game extends JPanel{
 
@@ -24,28 +20,46 @@ public class Game extends JPanel{
 	Map map;
 	StatsBar stats;
 	StartMenu menu;
-    public final Set<Character> pressed = new HashSet<Character>();
-    static int dimension;
-    
-    public GameStateManager gsm;
-    
+	static int dimension;
 
-    
-    //enum
-    public static enum STATE{
-    	MENU,
-    	GAME
-    };
+	public GameStateManager gsm;
+	public BuildingManager bm;
 
-    public static STATE State = STATE.MENU;
+
+
+	//enum
+	public static enum STATE{
+		MENU,
+		GAME
+	};
+	public static enum SUBSTATE{
+		PLAY,
+		STATSCREEN,
+		CLASSROOM,
+	};
+	public static enum RESTRICTEDX{
+		LEFT,
+		RIGHT,
+		NONE
+	};
+	public static enum RESTRICTEDY{
+		UP,
+		DOWN,
+		NONE
+	}
+
+	public static STATE State = STATE.MENU;
+	public static SUBSTATE subState = SUBSTATE.PLAY;
+	public static RESTRICTEDX restrictedX = RESTRICTEDX.NONE;
+	public static RESTRICTEDY restrictedY = RESTRICTEDY.NONE;
 
 	public Game(){
-		
-		
+
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int height = (int) screenSize.getHeight();
 		int width = (int) screenSize.getWidth();
-		
+
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
@@ -63,84 +77,80 @@ public class Game extends JPanel{
 		addKeyListener(klisten);
 
 		this.addMouseListener(new MouseInput());
-		
-		gsm = new GameStateManager();
-		
-		menu = new StartMenu();
-		
+
 		player = new Player();
 		map = new Map(player);
+
+		gsm = new GameStateManager(player, map, this, frame);
+		
+		bm = new BuildingManager(map);
+
+		menu = new StartMenu();
+
 		stats = new StatsBar(player, frame, this);
 	}
-	
-	public void step(){
-		
-	
-		if(pressed.contains(' ')) player.setSpeed(2);
-		else player.setSpeed(1);
-		
-		if(pressed.contains('w') && map.getY() <=0){
-			player.moveUp();
-			map.moveUp();
-		}
-		else if(pressed.contains('s') && map.getY() >= (-map.getMapHeight()+frame.getHeight())){
-			player.moveDown();
-			map.moveDown();
-		}else{
-			player.stopY();
-		}
-		
-		if(pressed.contains('a') && map.getX() <=0){
-			player.moveRight();
-			map.moveRight();
-		}
-		else if(pressed.contains('d') && map.getX() >= (-map.getMapWidth()+frame.getWidth())){
-			player.moveLeft();
-			map.moveLeft();
-		}else{
-			player.stopX();
-		}
-		player.move();
-		map.move();
-	}
-	
-	
-	
-	public void paintComponent(java.awt.Graphics g) {
-		
-		if(State == STATE.GAME){
-		
-		super.paintComponent(g);
-		map.drawMap(g, this);
-		player.drawPlayer(g, this, frame);
-		
-//		Building b = new Building(860, 320, 195, 600);
-		g.setColor(Color.BLACK);
-		//frank
-		g.fillRect(780 + map.getX(), 290 +map.getY(), 300, 630);
-		//bauman
-		g.fillRect(1412 + map.getX(), 450 +map.getY(), 240, 330);
-		//dorm1
-		g.fillRect(942- 65 + map.getX(),1109-104 +map.getY(), 65+500, 104+180);
-		g.fillRect(1130- 65 + map.getX(),1263-104 +map.getY(), 65+120, 104+200);
-		//cce place
-		g.fillRect(852- 65 + map.getX(),1740-104 +map.getY(), 70+335, 104+120);
-		g.fillRect(970- 65 + map.getX(),1620-104 +map.getY(), 170, 104+100);
 
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(Color.ORANGE);
-		g2.fill(new Ellipse2D.Double(0,0,frame.getWidth()/8,frame.getWidth()/8));
-		g.setFont(new Font("Courier", Font.PLAIN, 60));
-		g.setColor(Color.WHITE);
-		g.drawString(Integer.toString(player.getLevel()), frame.getWidth()/22, frame.getHeight()/12);
-	
-	
-		gsm.draw(g);
+	public void step(){
+		if(State == STATE.GAME)
+			gsm.tick();
+	}
+
+
+
+	public void paintComponent(java.awt.Graphics g) {
+		super.paintComponent(g);
+
+		if(State == STATE.GAME){
+			gsm.draw(g);
+
+			g.setColor(Color.BLACK);
+			//frank
+//			g.fillRect(780 + map.getX(), 290 +map.getY(), 300, 630);
+			//bauman
+			g.fillRect(1412 + map.getX(), 450 +map.getY(), 240, 330);
+			g.fillRect(1380- 65 + map.getX(),665-104 +map.getY(), 350+65, 155+100);
+			//king
+			g.fillRect(1270- 65 + map.getX(),2000-104 +map.getY(), 350+65, 321+100);
+			//duke
+			g.fillRect(1727- 65 + map.getX(),2810-104 +map.getY(), 310+65, 190+100);
+
+			
+			
+			//dorm1
+			g.fillRect(942- 65 + map.getX(),1109-104 +map.getY(), 65+500, 104+180);
+			g.fillRect(1130- 65 + map.getX(),1263-104 +map.getY(), 65+120, 104+200);
+			//cce place
+			g.fillRect(852- 65 + map.getX(),1740-104 +map.getY(), 70+335, 104+120);
+			g.fillRect(970- 65 + map.getX(),1620-104 +map.getY(), 170, 104+100);
+			//dorm
+			g.fillRect(1611- 65 + map.getX(),1240-104 +map.getY(), 300+65, 135+100);
+			//smol thing
+			g.fillRect(2250- 65 + map.getX(),720-104 +map.getY(), 100+65, 100+100);
+			//dorm
+			g.fillRect(1950- 65 + map.getX(),462-104 +map.getY(), 300+65, 150+100);
+			//dorm
+			g.fillRect(1342- 65 + map.getX(),1639-104 +map.getY(), 300+65, 140+100);
+			g.fillRect(1500- 65 + map.getX(),1560-104 +map.getY(), 111+65, 315+100);
+			//hege
+			g.fillRect(1023- 65 + map.getX(),2460-104 +map.getY(), 600+65, 345+100);
+
+
+
+
+
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(Color.ORANGE);
+			g2.fill(new Ellipse2D.Double(0,0,frame.getWidth()/8,frame.getWidth()/8));
+			g.setFont(new Font("Courier", Font.PLAIN, 60));
+			g.setColor(Color.WHITE);
+			g.drawString(Integer.toString(player.getLevel()), frame.getWidth()/22, frame.getHeight()/12);
+
+
 		}
-		
-		else if (State == STATE.MENU){
+
+		else if (State == STATE.MENU)
 			menu.render(g);
-		}
+
 	}
 
 
@@ -149,25 +159,21 @@ public class Game extends JPanel{
 	private class keyListener implements KeyListener{
 		@Override
 		public synchronized void keyPressed(KeyEvent e) {
-			
-			if(State == STATE.GAME){
-			pressed.add(e.getKeyChar());
+
 			gsm.keyPressed(e.getKeyCode());
-			}
+
 		}
 
 		@Override
 		public synchronized void keyReleased(KeyEvent e) {
-			if(State == STATE.GAME){
-			pressed.remove(e.getKeyChar());
-			}
-			}
+			gsm.keyReleased(e.getKeyCode());
+		}
 
 		@Override
 		public void keyTyped(KeyEvent e) {
 
 		}
-		
+
 
 	}
 }
