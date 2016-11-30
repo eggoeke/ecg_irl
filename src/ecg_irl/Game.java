@@ -27,7 +27,6 @@ public class Game extends JPanel{
 
 
 
-	//enum
 	public static enum STATE{
 		MENU,
 		GAME
@@ -35,7 +34,11 @@ public class Game extends JPanel{
 	public static enum SUBSTATE{
 		PLAY,
 		STATSCREEN,
-		CLASSROOM,
+		BAUMAN,
+		FRANK,
+		DUKE,
+		KING
+		
 	};
 	public static enum RESTRICTEDX{
 		LEFT,
@@ -80,13 +83,9 @@ public class Game extends JPanel{
 
 		player = new Player();
 		map = new Map(player);
-
 		gsm = new GameStateManager(player, map, this, frame);
-		
 		bm = new BuildingManager(map);
-
 		menu = new StartMenu();
-
 		stats = new StatsBar(player, frame, this);
 	}
 
@@ -101,41 +100,11 @@ public class Game extends JPanel{
 	public void paintComponent(java.awt.Graphics g) {
 		super.paintComponent(g);
 
+		if (State == STATE.MENU)
+			menu.render(g);
+
 		if(State == STATE.GAME){
 			gsm.draw(g);
-
-			g.setColor(Color.BLACK);
-//			//frank
-//			g.fillRect(780+65 + map.getX(), 290+100 +map.getY(), 300-65, 630-100);
-//			//bauman
-//			g.fillRect(1412 +65+ map.getX(), 450 +100 +map.getY(), 240-65, 330-100);
-//			g.fillRect(1380 + map.getX(),665 +map.getY(), 350, 155);
-//			//king
-//			g.fillRect(1270 + map.getX(),2000 +map.getY(), 350, 321);
-//			//duke
-//			g.fillRect(1727 + map.getX(),2810 +map.getY(), 310, 190);
-//
-//			
-//			
-//			//dorm1
-//			g.fillRect(942  + map.getX(),1109 +map.getY(), 500, 180);
-//			g.fillRect(1130  + map.getX(),1263 +map.getY(), 120, 200);
-//			//cce place
-//			g.fillRect(852  + map.getX(),1740 +map.getY(), 335, 120);
-//			g.fillRect(970  + map.getX(),1620 +map.getY(), 150, 200);
-//			//dorm
-//			g.fillRect(1611  + map.getX(),1240 +map.getY(), 300, 135);
-//			//smol thing
-//			g.fillRect(2250  + map.getX(),720 +map.getY(), 100, 100);
-//			//dorm
-//			g.fillRect(1950  + map.getX(),462 +map.getY(), 300, 150);
-//			//dorm
-//			g.fillRect(1342  + map.getX(),1639 +map.getY(), 300, 140);
-//			g.fillRect(1500 + map.getX(),1560 +map.getY(), 111, 315);
-//			//hege
-//			g.fillRect(1023 + map.getX(),2460 +map.getY(), 600, 345);
-//
-
 
 
 
@@ -145,13 +114,7 @@ public class Game extends JPanel{
 			g.setFont(new Font("Courier", Font.PLAIN, 60));
 			g.setColor(Color.WHITE);
 			g.drawString(Integer.toString(player.getLevel()), frame.getWidth()/22, frame.getHeight()/12);
-
-
 		}
-
-		else if (State == STATE.MENU)
-			menu.render(g);
-
 	}
 
 

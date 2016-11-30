@@ -2,13 +2,13 @@ package ecg_irl;
 
 import java.awt.Rectangle;
 
-public class OffLimitsBuilding extends Building {
+public class ClassroomBuilding extends Building{
 	Rectangle rect1, rect2;
 	Map map;
 	int x,y,tempX,tempY;
 	boolean intersectedY, intersectedX;
 
-	public OffLimitsBuilding(Rectangle rect1, Map map) {
+	public ClassroomBuilding(Rectangle rect1, Map map) {
 		super(rect1, map);
 		this.rect1 = rect1;
 		this.map = map;
@@ -16,10 +16,11 @@ public class OffLimitsBuilding extends Building {
 		y = rect1.getLocation().y;
 		intersectedX = false;
 		intersectedY = false;
-	}
+		}
 
 	@Override
 	public void tick() {
+		// TODO Auto-generated method stub
 		if(Game.restrictedX == Game.RESTRICTEDX.NONE && Game.restrictedY == Game.RESTRICTEDY.NONE || intersectedX || intersectedY ){
 			rect1.setLocation(x+map.getX(), y+map.getY());
 			tempX = rect1.getLocation().x;
@@ -62,15 +63,16 @@ public class OffLimitsBuilding extends Building {
 		}
 	}
 
-
 	@Override
 	public void keyPressed(int k) {
-
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void keyReleased(int k) {
-
+		// TODO Auto-generated method stub
+		
 	}
 
 }
