@@ -17,7 +17,7 @@ public class Game extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	Player player;
-	Map map;
+	Map campusMap;
 	StatsBar stats;
 	StartMenu menu;
 	static int dimension;
@@ -38,7 +38,7 @@ public class Game extends JPanel{
 		FRANK,
 		DUKE,
 		KING
-		
+
 	};
 	public static enum RESTRICTEDX{
 		LEFT,
@@ -82,9 +82,9 @@ public class Game extends JPanel{
 		this.addMouseListener(new MouseInput());
 
 		player = new Player();
-		map = new Map(player);
-		gsm = new GameStateManager(player, map, this, frame);
-		bm = new BuildingManager(map);
+		campusMap = new Map(player, "mapXL.png");
+		gsm = new GameStateManager(player, campusMap, this, frame);
+		bm = new BuildingManager(campusMap);
 		menu = new StartMenu();
 		stats = new StatsBar(player, frame, this);
 	}
@@ -92,7 +92,12 @@ public class Game extends JPanel{
 	public void step(){
 		if(State == STATE.GAME)
 			gsm.tick();
-		bm.tick();
+		if(subState == SUBSTATE.PLAY)
+			bm.tick();
+		else{
+			restrictedX = RESTRICTEDX.NONE;
+			restrictedY = RESTRICTEDY.NONE;
+		}
 	}
 
 
@@ -105,7 +110,6 @@ public class Game extends JPanel{
 
 		if(State == STATE.GAME){
 			gsm.draw(g);
-
 
 
 			Graphics2D g2 = (Graphics2D) g;
@@ -123,9 +127,9 @@ public class Game extends JPanel{
 	private class keyListener implements KeyListener{
 		@Override
 		public synchronized void keyPressed(KeyEvent e) {
-
 			gsm.keyPressed(e.getKeyCode());
-
+			if(subState == SUBSTATE.PLAY)
+				bm.keyPressed(e.getKeyCode());
 		}
 
 		@Override

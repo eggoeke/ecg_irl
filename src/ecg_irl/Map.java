@@ -11,13 +11,14 @@ public class Map {
 	private ImageIcon map;
 
 	
-	public Map(Player player){
+	public Map(Player player, String imagePath){
 		this.player = player;
 		x = 0;
 		y = 0;
+		map = new ImageIcon(imagePath);
+
 	}
 	public void drawMap(Graphics g, JPanel game){
-		map = new ImageIcon("mapXL.png");
 		mapWidth = map.getIconWidth();
 		mapHeight = map.getIconHeight();
 		map.paintIcon(game, g, x, y);

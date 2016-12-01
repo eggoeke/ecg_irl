@@ -11,5 +11,6 @@ public abstract class Building {
 	public abstract void tick();
 	public abstract void keyPressed(int k);
 	public abstract void keyReleased(int k);
+	
 
 }
