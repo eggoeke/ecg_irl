@@ -159,7 +159,5 @@ public class Game extends JPanel{
 		public void keyTyped(KeyEvent e) {
 
 		}
-
-
 	}
 }
