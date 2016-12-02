@@ -104,6 +104,8 @@ public class Game extends JPanel{
 		bm = new BuildingManager(campusMap);
 		stats = new StatsBar(player, frame, this);
 		chafic = new Chafic(this);
+		
+		this.grabFocus();
 
 	}
 
