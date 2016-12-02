@@ -1,10 +1,22 @@
 package ecg_irl;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+
+
 public class MouseInput implements MouseListener {
 
+	private HelpFrame hFrame;
+	
+	public MouseInput(){
+		
+		
+		hFrame = new HelpFrame("Help");
+		
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -48,6 +60,7 @@ public class MouseInput implements MouseListener {
 			if(my >= 150 && my <= 200)
 			{
 				Game.State = Game.STATE.GAME;
+				Sound.sound1.loop();
 			}
 			
 		}
@@ -56,7 +69,7 @@ public class MouseInput implements MouseListener {
 		if(mx >= Game.dimension/2 - 50 && mx <= Game.dimension/2 + 50){
 			if(my >= 250 && my <= 300)
 			{
-				//SOMETHING
+				hFrame.setVisible(true);
 			}
 			
 		}

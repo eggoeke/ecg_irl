@@ -3,12 +3,18 @@ package ecg_irl;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -21,6 +27,8 @@ public class Game extends JPanel{
 	Map campusMap;
 	StatsBar stats;
 	static int dimension;
+	MouseInput m;
+	Chafic chafic;
 
 	public GameStateManager gsm;
 	public BuildingManager bm;
@@ -29,15 +37,22 @@ public class Game extends JPanel{
 
 	public static enum STATE{
 		MENU,
-		GAME
+		GAME,
+		WIN
 	};
 	public static enum SUBSTATE{
 		PLAY,
 		STATSCREEN,
+		JOURNALSCREEN,
 		BAUMAN,
 		FRANK,
 		DUKE,
-		KING
+		KING,
+		BATTLEFRANK,
+		BATTLEDUKE,
+		BATTLEKING,
+		BATTLEBAUMAN,
+		ENDGAME
 
 	};
 	public static enum RESTRICTEDX{
@@ -79,25 +94,68 @@ public class Game extends JPanel{
 		keyListener klisten = new keyListener();
 		addKeyListener(klisten);
 
-		this.addMouseListener(new MouseInput());
+		m = new MouseInput();
+		this.addMouseListener(m);
+
 
 		player = new Player();
 		campusMap = new Map(player, "mapXL.png");
 		gsm = new GameStateManager(player, campusMap, this, frame);
 		bm = new BuildingManager(campusMap);
 		stats = new StatsBar(player, frame, this);
+		chafic = new Chafic(this);
+
 	}
 
+
+
 	public void step(){
-		if(State == STATE.GAME)
+		if(State == STATE.GAME){
 			gsm.tick();
-		if(subState == SUBSTATE.PLAY)
+			this.removeMouseListener(m);
+			if(player.getExp() >= player.getmaxEXP()){
+				player.setLevel(player.getLevel()+1);
+				player.setExp(0);
+				player.setmaxEXP(player.getmaxEXP()+100);
+				player.setmaxHP(player.maxHP+20);
+				player.rest();
+			}
+		}
+		 if(subState == SUBSTATE.BATTLEFRANK){
+			 Sound.sound1.stop();
+
+			 }
+			 if(subState == SUBSTATE.BATTLEBAUMAN){
+			 Sound.sound1.stop();
+
+			 }
+			 if(subState == SUBSTATE.BATTLEKING){
+			 Sound.sound1.stop();
+
+			 }
+			 if(subState == SUBSTATE.BATTLEDUKE){
+			 Sound.sound1.stop();
+
+			 }
+
+			 if(subState == SUBSTATE.PLAY){
+			 bm.tick();
+			 Sound.sound2.stop();
+
+			 }
+		
+		if(subState == SUBSTATE.PLAY)		
 			bm.tick();
+
 		else{
 			restrictedX = RESTRICTEDX.NONE;
 			restrictedY = RESTRICTEDY.NONE;
 		}
+		
+		
+		
 	}
+
 
 
 
@@ -105,17 +163,19 @@ public class Game extends JPanel{
 		super.paintComponent(g);
 
 		if (State == STATE.MENU){
+			ImageIcon mappy = new ImageIcon("mapXL.png");
+			mappy.paintIcon(this, g, 0, 0);
 			Rectangle playButton = new Rectangle(Game.dimension/2 - 50 , 150, 100, 50);
 			Rectangle helpButton = new Rectangle(Game.dimension/2 - 50, 250, 100, 50);
 			Rectangle quitButton = new Rectangle(Game.dimension/2 - 50, 350, 100, 50);
 
 			Graphics2D g2d = (Graphics2D) g;
-			
+
 			Font font = new Font("Arial", Font.BOLD, 50);
 			g.setFont(font);
 			g.setColor(Color.BLACK);
 			g.drawString("ECG IRL", Game.dimension/3+55, 100);
-			
+
 			Font font1 = new Font("Arial", Font.BOLD, 30);
 			g.setFont(font1);
 			g.drawString("Start", playButton.x + 15, playButton.y + 34);
@@ -125,27 +185,38 @@ public class Game extends JPanel{
 			g2d.draw(helpButton);
 			g2d.draw(quitButton);
 		}
-
+		if(State == STATE.WIN){
+			g.setColor(Color.orange);
+			g.fillRect(0, 0, dimension, dimension);
+			g.setColor(Color.WHITE);
+			g.drawString("YOU WIN", 100, 100);
+		}
 		if(State == STATE.GAME){
+
 			gsm.draw(g);
 
 
-			Graphics2D g2 = (Graphics2D) g;
-			g2.setColor(Color.ORANGE);
-			g2.fill(new Ellipse2D.Double(0,0,frame.getWidth()/8,frame.getWidth()/8));
-			g.setFont(new Font("Courier", Font.PLAIN, 60));
-			g.setColor(Color.WHITE);
-			g.drawString(Integer.toString(player.getLevel()), frame.getWidth()/22, frame.getHeight()/12);
+			if(subState == SUBSTATE.PLAY){
+
+
+
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setColor(Color.ORANGE);
+				g2.fill(new Ellipse2D.Double(0,0,frame.getWidth()/8,frame.getWidth()/8));
+				g.setFont(new Font("Courier", Font.BOLD, 25));
+				g.setColor(Color.WHITE);
+				g.drawString("Lvl " + Integer.toString(player.getLevel()), frame.getWidth()/40, frame.getHeight()/14);
+			}
 		}
+
 	}
-
-
 
 
 	private class keyListener implements KeyListener{
 		@Override
 		public synchronized void keyPressed(KeyEvent e) {
 			gsm.keyPressed(e.getKeyCode());
+
 			if(subState == SUBSTATE.PLAY)
 				bm.keyPressed(e.getKeyCode());
 		}
@@ -159,5 +230,7 @@ public class Game extends JPanel{
 		public void keyTyped(KeyEvent e) {
 
 		}
+
+
 	}
 }

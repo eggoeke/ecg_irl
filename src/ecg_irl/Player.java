@@ -10,7 +10,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Player {
-	int intelligence, exp, maxEXP, hp, maxHP, xMove, yMove, x, y, time, speed, count, level;
+	int intelligence;
+	int exp;
+	int maxEXP;
+	int hp;
+	int maxHP;
+	int xMove;
+	int yMove;
+	int x;
+	int y;
+	int time;
+	int speed;
+	int count;
+	int level;
 	boolean dead;
 	private BufferedImage spriteSheet = null;
 
@@ -21,9 +33,11 @@ public class Player {
 		hp = 50;
 		maxHP = 50;
 		exp = 0;
-		maxEXP = 100;
+		maxEXP = 10;
 		time = 80;
 		speed = 5;
+		intelligence = 1;
+		level = 1;
 	}
 	public void moveUp(){
 		yMove = speed;
@@ -51,6 +65,7 @@ public class Player {
 	public void rest(){
 		hp = maxHP;
 		time -= 1;
+	    Sound.sound3.play();
 	}
 	public void killed(){
 		hp = maxHP;
@@ -130,7 +145,7 @@ public class Player {
 	public int getHp() {
 		return hp;
 	}
-	public void setHp(int hp) {
+	public  void setHp(int hp) {
 		this.hp = hp;
 	}
 	public int getSpeed() {

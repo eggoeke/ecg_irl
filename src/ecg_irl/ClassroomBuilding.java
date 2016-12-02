@@ -83,9 +83,10 @@ public class ClassroomBuilding extends Building{
 	@Override
 	public void keyPressed(int k) {
 		// TODO Auto-generated method stub
-		if((k == KeyEvent.VK_SHIFT && rect1.intersects(player)) && ClassroomState.toggle){
+		if((k == KeyEvent.VK_R && rect1.intersects(player)) && ClassroomState.toggle){
 			Game.subState = state;
 		}
+		
 
 	}
 

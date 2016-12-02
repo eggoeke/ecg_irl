@@ -29,9 +29,10 @@ public class GUI {
 				lastFpsTime = 0;
 				fps = 0;
 			}
-
-			game.step(); 
+			
+			game.step();
 			game.repaint();
+			
 			try{
 				Thread.sleep( (Math.max(0,Math.min(lastLoopTime,(lastLoopTime)-System.nanoTime() + OPTIMAL_TIME)/1000000 )));
 			} catch(InterruptedException ex) {
